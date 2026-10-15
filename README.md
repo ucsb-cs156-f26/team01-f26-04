@@ -1,26 +1,20 @@
-# STARTER-team01
+# team01-f26-04
 
 Instructions: <https://ucsb-cs156.github.io/s26/lab/team01.html>
 
-TODO: change heading above to your repo name, e.g. `# team01-s26-17`
-
-TODO: Add a link to the deployed Dokku app for your team here, e.g.
-
 Deployments:
 
-* Prod: <https://team01.dokku-17.cs.ucsb.edu>
-* QA: <https://team01-qa.dokku-17.cs.ucsb.edu>
-
-TODO: Fill in this table with correct information. 
+* Prod: <https://team01.dokku-04.cs.ucsb.edu>
+* QA: <https://team01-qa.dokku-04.cs.ucsb.edu>
 
 | Table                     | Name         | Github Id |
 |---------------------------|--------------|-----------|
-| UCSBDiningCommonsMenuItem |              |           |
-| UCSBOrganization          |              |           |
-| RecommendationRequest     |              |           |
-| MenuItemReview            |              |           |
-| HelpRequest               |              |           |
-| Articles                  |              |           |
+| UCSBDiningCommonsMenuItem |Haoting Huang |Haot1ngHuang|
+| UCSBOrganization          |Sarah Hong    |srxsyd     |
+| RecommendationRequest     |Harry Lai     |harry-lai  |
+| MenuItemReview            |Jonathan Lo   |jonathan-m-lo|
+| HelpRequest               |Athena Chen   |athenac7   |
+| Articles                  |Austin Li     |austinli356|
 
 Remember though, that in spite of these initial  assignments, it is still
 a team project.  Please help other team members to finish their work
@@ -30,21 +24,6 @@ after completing your own.
 * Java: 21
 * node: 20.17.0
 See [docs/versions.md](docs/versions.md) for more information on upgrading versions.
-
-# Brief overview of starter code 
-
-TODO: remove this header and content of this section before submitting.
-However leave the section `# Overview of application` and its content 
-intact.
-
-The starter code here starts with a base similar to `team01`, but with 
-some extra frontend code on top of the of backend CRUD operations
-that were present in `team01`.
-
-You can use this code as a basis to:
-* Add the backend code from team01 *in stages* as suggested in the issues (doing that in "one giant pull request" is *not recommended) 
-* Add a frontend on top of the backend CRUD features you added in team01, using the existing
-  code as examples.
 
 # Overview of application
 
