@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = &quot;HelpRequest&quot;)
 @RequestMapping(&quot;/api/HelpRequest&quot;)
 @RestController
-<span class="nc" id="L23">@Slf4j</span>
-<span class="nc" id="L24">public class HelpRequestController extends ApiController {</span>
+<span class="fc" id="L23">@Slf4j</span>
+<span class="fc" id="L24">public class HelpRequestController extends ApiController {</span>
 
   @Autowired HelpRequestRepository helpRequestRepository;
 
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
   @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
   @GetMapping(&quot;/all&quot;)
   public Iterable&lt;HelpRequest&gt; allHelpRequests() {
-<span class="nc" id="L37">    return helpRequestRepository.findAll();</span>
+<span class="fc" id="L37">    return helpRequestRepository.findAll();</span>
   }
 
   /**
@@ -64,17 +64,17 @@ import org.springframework.web.bind.annotation.RestController;
       @Parameter(name = &quot;explanation&quot;) @RequestParam String explanation,
       @Parameter(name = &quot;solved&quot;) @RequestParam boolean solved) {
 
-<span class="nc" id="L67">    log.info(&quot;requestTime={}&quot;, requestTime);</span>
+<span class="fc" id="L67">    log.info(&quot;requestTime={}&quot;, requestTime);</span>
 
-<span class="nc" id="L69">    HelpRequest helpRequest = new HelpRequest();</span>
-<span class="nc" id="L70">    helpRequest.setRequesterEmail(requesterEmail);</span>
-<span class="nc" id="L71">    helpRequest.setTeamId(teamId);</span>
-<span class="nc" id="L72">    helpRequest.setTableOrBreakoutRoom(tableOrBreakoutRoom);</span>
-<span class="nc" id="L73">    helpRequest.setRequestTime(requestTime);</span>
-<span class="nc" id="L74">    helpRequest.setExplanation(explanation);</span>
-<span class="nc" id="L75">    helpRequest.setSolved(solved);</span>
+<span class="fc" id="L69">    HelpRequest helpRequest = new HelpRequest();</span>
+<span class="fc" id="L70">    helpRequest.setRequesterEmail(requesterEmail);</span>
+<span class="fc" id="L71">    helpRequest.setTeamId(teamId);</span>
+<span class="fc" id="L72">    helpRequest.setTableOrBreakoutRoom(tableOrBreakoutRoom);</span>
+<span class="fc" id="L73">    helpRequest.setRequestTime(requestTime);</span>
+<span class="fc" id="L74">    helpRequest.setExplanation(explanation);</span>
+<span class="fc" id="L75">    helpRequest.setSolved(solved);</span>
 
-<span class="nc" id="L77">    return helpRequestRepository.save(helpRequest);</span>
+<span class="fc" id="L77">    return helpRequestRepository.save(helpRequest);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
