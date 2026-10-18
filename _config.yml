@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/team01-f26-04
 owner: ucsb-cs156-f26
 repo_name: team01-f26-04
-pull_requests: [{"author":{"id":"U_kgDODguHoA","is_bot":false,"login":"athenac7","name":"Athena Chen"},"headRefName":"Athena-HelpRequestTable","number":43,"title":"HelpRequest: Add entity and database migration","url":"https://github.com/ucsb-cs156-f26/team01-f26-04/pull/43"}]
+pull_requests: [{"author":{"id":"U_kgDODguHoA","is_bot":false,"login":"athenac7","name":"Athena Chen"},"headRefName":"Athena-HelpRequestController","number":44,"title":"Create HelpRequestController with GET and POST endpoints","url":"https://github.com/ucsb-cs156-f26/team01-f26-04/pull/44"},{"author":{"id":"U_kgDODguHoA","is_bot":false,"login":"athenac7","name":"Athena Chen"},"headRefName":"Athena-HelpRequestTable","number":43,"title":"HelpRequest: Add entity and database migration","url":"https://github.com/ucsb-cs156-f26/team01-f26-04/pull/43"}]
