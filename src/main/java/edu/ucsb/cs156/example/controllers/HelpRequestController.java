@@ -8,10 +8,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -87,6 +91,28 @@ public class HelpRequestController extends ApiController {
     helpRequestRepository.save(helpRequest);
 
     return helpRequest;
+  }
+
+  /**
+   * Delete a single help request.
+   *
+   * @param id the ID of the help request to delete
+   * @return a message indicating whether the record was deleted
+   */
+  @Operation(summary = "Delete a HelpRequest by ID")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @DeleteMapping("")
+  public ResponseEntity<Object> deleteHelpRequest(@Parameter(name = "id") @RequestParam Long id) {
+
+    Optional<HelpRequest> result = helpRequestRepository.findById(id);
+
+    if (result.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(genericMessage("record %s not found".formatted(id)));
+    }
+
+    helpRequestRepository.delete(result.get());
+    return ResponseEntity.ok(genericMessage("record %s deleted".formatted(id)));
   }
 
   /**
