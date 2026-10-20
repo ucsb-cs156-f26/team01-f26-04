@@ -2,9 +2,11 @@ package edu.ucsb.cs156.example.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -14,9 +16,11 @@ import edu.ucsb.cs156.example.repositories.UCSBDiningCommonsMenuItemRepository;
 import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
@@ -131,5 +135,46 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
     verify(repository).save(eq(incoming));
 
     assertEquals(mapper.writeValueAsString(saved), response.getResponse().getContentAsString());
+  }
+
+  @Test
+  public void user_can_get_menu_item_by_id() throws Exception {
+    UCSBDiningCommonsMenuItem item =
+        UCSBDiningCommonsMenuItem.builder()
+            .id(42L)
+            .diningCommonsCode("ortega")
+            .name("Chicken Alfredo")
+            .station("Entrees")
+            .build();
+
+    when(repository.findById(42L)).thenReturn(Optional.of(item));
+
+    mockMvc
+        .perform(
+            get("/api/UCSBDiningCommonsMenuItem")
+                .param("id", "42")
+                .with(oidcLogin().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(42))
+        .andExpect(jsonPath("$.diningCommonsCode").value("ortega"))
+        .andExpect(jsonPath("$.name").value("Chicken Alfredo"))
+        .andExpect(jsonPath("$.station").value("Entrees"));
+
+    verify(repository, times(1)).findById(42L);
+  }
+
+  @Test
+  public void user_gets_404_for_nonexistent_menu_item() throws Exception {
+    when(repository.findById(999L)).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(
+            get("/api/UCSBDiningCommonsMenuItem")
+                .param("id", "999")
+                .with(oidcLogin().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(org.hamcrest.Matchers.containsString("id 999 not found")));
+
+    verify(repository, times(1)).findById(999L);
   }
 }
