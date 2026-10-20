@@ -17,6 +17,8 @@ import edu.ucsb.cs156.example.testconfig.TestConfig;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -32,6 +34,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
   @MockitoBean UserRepository userRepository;
 
+  // GET all tests
   @Test
   public void logged_out_users_cannot_get_all() throws Exception {
     mockMvc
@@ -43,35 +46,6 @@ public class ArticlesControllerTests extends ControllerTestCase {
   @Test
   public void logged_in_users_can_get_all() throws Exception {
     mockMvc.perform(get("/api/articles/all")).andExpect(status().is(200)); // logged
-  }
-
-  @Test
-  public void logged_out_users_cannot_post() throws Exception {
-    mockMvc
-        .perform(
-            post("/api/articles/post")
-                .param("title", "test")
-                .param("url", "test.com")
-                .param("explanation", "test")
-                .param("email", "austin_li@ucsb.edu")
-                .param("dateAdded", "2022-01-03T00:00:00")
-                .with(csrf()))
-        .andExpect(status().is(403));
-  }
-
-  @WithMockUser(roles = {"USER"})
-  @Test
-  public void logged_in_regular_users_cannot_post() throws Exception {
-    mockMvc
-        .perform(
-            post("/api/articles/post")
-                .param("title", "test")
-                .param("url", "test.com")
-                .param("explanation", "test")
-                .param("email", "austin_li@ucsb.edu")
-                .param("dateAdded", "2022-01-03T00:00:00")
-                .with(csrf()))
-        .andExpect(status().is(403)); // only admins can post
   }
 
   @WithMockUser(roles = {"USER"})
@@ -116,6 +90,100 @@ public class ArticlesControllerTests extends ControllerTestCase {
     String expectedJson = mapper.writeValueAsString(expectedArticles);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
+  }
+
+  // GET by id tests
+  @Test
+  public void logged_out_users_cannot_get_by_id() throws Exception {
+    mockMvc
+        .perform(get("/api/articles").param("id", "7"))
+        .andExpect(status().is(403)); // logged out users can't get by id
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+
+    // arrange
+    LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
+
+    Article article =
+        Article.builder()
+            .title("test")
+            .url("test.com")
+            .explanation("test")
+            .email("austin_li@ucsb.edu")
+            .dateAdded(ldt)
+            .build();
+
+    when(articleRepository.findById(eq(7L))).thenReturn(Optional.of(article));
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(get("/api/articles").param("id", "7"))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    // assert
+
+    verify(articleRepository, times(1)).findById(eq(7L));
+    String expectedJson = mapper.writeValueAsString(article);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expectedJson, responseString);
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+    // arrange
+
+    when(articleRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(get("/api/articles").param("id", "7"))
+            .andExpect(status().isNotFound())
+            .andReturn();
+
+    // assert
+
+    verify(articleRepository, times(1)).findById(eq(7L));
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("EntityNotFoundException", json.get("type"));
+    assertEquals("Article with id 7 not found", json.get("message"));
+  }
+
+  // POST tests
+  @Test
+  public void logged_out_users_cannot_post() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/articles/post")
+                .param("title", "test")
+                .param("url", "test.com")
+                .param("explanation", "test")
+                .param("email", "austin_li@ucsb.edu")
+                .param("dateAdded", "2022-01-03T00:00:00")
+                .with(csrf()))
+        .andExpect(status().is(403));
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void logged_in_regular_users_cannot_post() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/articles/post")
+                .param("title", "test")
+                .param("url", "test.com")
+                .param("explanation", "test")
+                .param("email", "austin_li@ucsb.edu")
+                .param("dateAdded", "2022-01-03T00:00:00")
+                .with(csrf()))
+        .andExpect(status().is(403)); // only admins can post
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
