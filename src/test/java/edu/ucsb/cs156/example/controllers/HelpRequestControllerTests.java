@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import edu.ucsb.cs156.example.ControllerTestCase;
@@ -19,6 +20,7 @@ import edu.ucsb.cs156.example.testconfig.TestConfig;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -150,5 +152,44 @@ public class HelpRequestControllerTests extends ControllerTestCase {
     String expectedJson = mapper.writeValueAsString(expectedRequest);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
+  }
+
+  @Test
+  public void logged_out_users_cannot_get_by_id() throws Exception {
+    mockMvc.perform(get("/api/HelpRequest?id=1")).andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void logged_in_users_can_get_by_id() throws Exception {
+    HelpRequest request =
+        HelpRequest.builder()
+            .requesterEmail("student1@ucsb.edu")
+            .teamId("team01")
+            .tableOrBreakoutRoom("Table 5")
+            .requestTime(LocalDateTime.parse("2026-10-17T14:30:00"))
+            .explanation("Need help with Java")
+            .solved(false)
+            .build();
+
+    request.setId(1L);
+    when(helpRequestRepository.findById(1L)).thenReturn(Optional.of(request));
+
+    MvcResult response =
+        mockMvc.perform(get("/api/HelpRequest?id=1")).andExpect(status().isOk()).andReturn();
+
+    verify(helpRequestRepository, times(1)).findById(1L);
+    assertEquals(mapper.writeValueAsString(request), response.getResponse().getContentAsString());
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void logged_in_users_get_404_for_missing_id() throws Exception {
+    when(helpRequestRepository.findById(123L)).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(get("/api/HelpRequest?id=123"))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(org.hamcrest.Matchers.containsString("id 123 not found")));
   }
 }
