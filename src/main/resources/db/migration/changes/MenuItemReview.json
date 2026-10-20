@@ -21,6 +21,7 @@
           "changes": [
             {
               "createTable": {
+                "tableName": "MENUITEMREVIEWS",
                 "columns": [
                   {
                     "column": {
@@ -35,13 +36,13 @@
                   },
                   {
                     "column": {
-                      "name": "ITEMID",
+                      "name": "ITEM_ID",
                       "type": "BIGINT"
                     }
                   },
                   {
                     "column": {
-                      "name": "REVIEWEREMAIL",
+                      "name": "REVIEWER_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -53,7 +54,7 @@
                   },
                   {
                     "column": {
-                      "name": "DATEREVIEWED",
+                      "name": "DATE_REVIEWED",
                       "type": "TIMESTAMP"
                     }
                   },
@@ -63,8 +64,7 @@
                       "type": "VARCHAR(255)"
                     }
                   }
-                ],
-                "tableName": "MENUITEMREVIEWS"
+                ]
               }
             }
           ]
