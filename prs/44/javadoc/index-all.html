@@ -64,6 +64,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/JobsController.html#allJobs()" class="member-name-link">allJobs()</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/JobsController.html" title="class in edu.ucsb.cs156.example.controllers">JobsController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html#allOrganizations()" class="member-name-link">allOrganizations()</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a></dt>
+<dd>
+<div class="block">This method returns a list of all ucsb organizations.</div>
+</dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html#allRestaurants()" class="member-name-link">allRestaurants()</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html" title="class in edu.ucsb.cs156.example.controllers">RestaurantsController</a></dt>
 <dd>
 <div class="block">This method returns a list of all restaurants.</div>
@@ -226,6 +230,10 @@ by querying the user repository.</div>
 <dt><a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html#getById(java.lang.String)" class="member-name-link">getById(String)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBDiningCommonsController</a></dt>
 <dd>
 <div class="block">This method returns a single diningcommons.</div>
+</dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html#getById(java.lang.String)" class="member-name-link">getById(String)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a></dt>
+<dd>
+<div class="block">This method returns a single ucsb organization.</div>
 </dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/ApiController.html#getCurrentUser()" class="member-name-link">getCurrentUser()</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/ApiController.html" title="class in edu.ucsb.cs156.example.controllers">ApiController</a></dt>
 <dd>
@@ -427,6 +435,10 @@ authentication.</div>
 <dd>
 <div class="block">Create a new help request.</div>
 </dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html#postOrganization(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">postOrganization(String, String, String, boolean)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a></dt>
+<dd>
+<div class="block">This method creates a new ucsb organization.</div>
+</dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html#postRestaurant(java.lang.String,java.lang.String)" class="member-name-link">postRestaurant(String, String)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html" title="class in edu.ucsb.cs156.example.controllers">RestaurantsController</a></dt>
 <dd>
 <div class="block">This method creates a new restaurant.</div>
@@ -535,13 +547,41 @@ academic calendar dates.</div>
 </dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html#%3Cinit%3E()" class="member-name-link">UCSBDiningCommonsController()</a> - Constructor for class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBDiningCommonsController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="edu/ucsb/cs156/example/entities/UCSBDiningCommonsMenuItem.html" class="type-name-link" title="class in edu.ucsb.cs156.example.entities">UCSBDiningCommonsMenuItem</a> - Class in <a href="edu/ucsb/cs156/example/entities/package-summary.html">edu.ucsb.cs156.example.entities</a></dt>
+<dd>
+<div class="block">A menu item offered at a UCSB dining commons.</div>
+</dd>
+<dt><a href="edu/ucsb/cs156/example/entities/UCSBDiningCommonsMenuItem.html#%3Cinit%3E()" class="member-name-link">UCSBDiningCommonsMenuItem()</a> - Constructor for class edu.ucsb.cs156.example.entities.<a href="edu/ucsb/cs156/example/entities/UCSBDiningCommonsMenuItem.html" title="class in edu.ucsb.cs156.example.entities">UCSBDiningCommonsMenuItem</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="edu/ucsb/cs156/example/repositories/UCSBDiningCommonsMenuItemRepository.html" class="type-name-link" title="interface in edu.ucsb.cs156.example.repositories">UCSBDiningCommonsMenuItemRepository</a> - Interface in <a href="edu/ucsb/cs156/example/repositories/package-summary.html">edu.ucsb.cs156.example.repositories</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="edu/ucsb/cs156/example/repositories/UCSBDiningCommonsRepository.html" class="type-name-link" title="interface in edu.ucsb.cs156.example.repositories">UCSBDiningCommonsRepository</a> - Interface in <a href="edu/ucsb/cs156/example/repositories/package-summary.html">edu.ucsb.cs156.example.repositories</a></dt>
 <dd>
 <div class="block">The UCSBDiningCommonsRepository is a repository for UCSBDiningCommons entities</div>
 </dd>
+<dt><a href="edu/ucsb/cs156/example/entities/UCSBOrganization.html" class="type-name-link" title="class in edu.ucsb.cs156.example.entities">UCSBOrganization</a> - Class in <a href="edu/ucsb/cs156/example/entities/package-summary.html">edu.ucsb.cs156.example.entities</a></dt>
+<dd>
+<div class="block">This is a JPA entity that represents a UCSB Organization.</div>
+</dd>
+<dt><a href="edu/ucsb/cs156/example/entities/UCSBOrganization.html#%3Cinit%3E()" class="member-name-link">UCSBOrganization()</a> - Constructor for class edu.ucsb.cs156.example.entities.<a href="edu/ucsb/cs156/example/entities/UCSBOrganization.html" title="class in edu.ucsb.cs156.example.entities">UCSBOrganization</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" class="type-name-link" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a> - Class in <a href="edu/ucsb/cs156/example/controllers/package-summary.html">edu.ucsb.cs156.example.controllers</a></dt>
+<dd>
+<div class="block">This is a REST controller for UCSBOrganization</div>
+</dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html#%3Cinit%3E()" class="member-name-link">UCSBOrganizationController()</a> - Constructor for class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="edu/ucsb/cs156/example/repositories/UCSBOrganizationRepository.html" class="type-name-link" title="interface in edu.ucsb.cs156.example.repositories">UCSBOrganizationRepository</a> - Interface in <a href="edu/ucsb/cs156/example/repositories/package-summary.html">edu.ucsb.cs156.example.repositories</a></dt>
+<dd>
+<div class="block">The UCSBOrganizationRepository is a repository for UCSBOrganization entities.</div>
+</dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html#updateCommons(java.lang.String,edu.ucsb.cs156.example.entities.UCSBDiningCommons)" class="member-name-link">updateCommons(String, UCSBDiningCommons)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBDiningCommonsController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBDiningCommonsController</a></dt>
 <dd>
 <div class="block">Update a single diningcommons.</div>
+</dd>
+<dt><a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html#updateOrganization(java.lang.String,edu.ucsb.cs156.example.entities.UCSBOrganization)" class="member-name-link">updateOrganization(String, UCSBOrganization)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/UCSBOrganizationController.html" title="class in edu.ucsb.cs156.example.controllers">UCSBOrganizationController</a></dt>
+<dd>
+<div class="block">Update a single ucsb organization.</div>
 </dd>
 <dt><a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html#updateRestaurant(java.lang.Long,edu.ucsb.cs156.example.entities.Restaurant)" class="member-name-link">updateRestaurant(Long, Restaurant)</a> - Method in class edu.ucsb.cs156.example.controllers.<a href="edu/ucsb/cs156/example/controllers/RestaurantsController.html" title="class in edu.ucsb.cs156.example.controllers">RestaurantsController</a></dt>
 <dd>
