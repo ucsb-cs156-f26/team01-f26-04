@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = &quot;Articles&quot;)
 @RequestMapping(&quot;/api/articles&quot;)
 @RestController
-<span class="nc" id="L24">@Slf4j</span>
-<span class="nc" id="L25">public class ArticlesController extends ApiController {</span>
+<span class="fc" id="L24">@Slf4j</span>
+<span class="fc" id="L25">public class ArticlesController extends ApiController {</span>
   @Autowired ArticleRepository articleRepository;
 
   /**
@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
   @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
   @GetMapping(&quot;/all&quot;)
   public Iterable&lt;Article&gt; allArticles() {
-<span class="nc" id="L37">    Iterable&lt;Article&gt; articles = articleRepository.findAll();</span>
-<span class="nc" id="L38">    return articles;</span>
+<span class="fc" id="L37">    Iterable&lt;Article&gt; articles = articleRepository.findAll();</span>
+<span class="fc" id="L38">    return articles;</span>
   }
 
   /**
@@ -68,18 +68,18 @@ import org.springframework.web.bind.annotation.RestController;
     // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     // See: https://www.baeldung.com/spring-date-parameters
 
-<span class="nc" id="L71">    log.info(&quot;dateAdded={}&quot;, dateAdded);</span>
+<span class="fc" id="L71">    log.info(&quot;dateAdded={}&quot;, dateAdded);</span>
 
-<span class="nc" id="L73">    Article article = new Article();</span>
-<span class="nc" id="L74">    article.setTitle(title);</span>
-<span class="nc" id="L75">    article.setUrl(url);</span>
-<span class="nc" id="L76">    article.setExplanation(explanation);</span>
-<span class="nc" id="L77">    article.setEmail(email);</span>
-<span class="nc" id="L78">    article.setDateAdded(dateAdded);</span>
+<span class="fc" id="L73">    Article article = new Article();</span>
+<span class="fc" id="L74">    article.setTitle(title);</span>
+<span class="fc" id="L75">    article.setUrl(url);</span>
+<span class="fc" id="L76">    article.setExplanation(explanation);</span>
+<span class="fc" id="L77">    article.setEmail(email);</span>
+<span class="fc" id="L78">    article.setDateAdded(dateAdded);</span>
 
-<span class="nc" id="L80">    Article savedArticle = articleRepository.save(article);</span>
+<span class="fc" id="L80">    Article savedArticle = articleRepository.save(article);</span>
 
-<span class="nc" id="L82">    return savedArticle;</span>
+<span class="fc" id="L82">    return savedArticle;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
