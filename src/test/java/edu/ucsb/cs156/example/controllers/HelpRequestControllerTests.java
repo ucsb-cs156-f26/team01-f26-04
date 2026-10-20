@@ -7,8 +7,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
@@ -191,5 +194,170 @@ public class HelpRequestControllerTests extends ControllerTestCase {
         .perform(get("/api/HelpRequest?id=123"))
         .andExpect(status().isNotFound())
         .andExpect(content().string(org.hamcrest.Matchers.containsString("id 123 not found")));
+  }
+
+  private String validPutBody() {
+    return "{\"requesterEmail\":\"student2@ucsb.edu\","
+        + "\"teamId\":\"team02\","
+        + "\"tableOrBreakoutRoom\":\"Table 8\","
+        + "\"requestTime\":\"2023-01-03T00:00:00\","
+        + "\"explanation\":\"Updated help request\","
+        + "\"solved\":true}";
+  }
+
+  @Test
+  public void logged_out_users_cannot_put() throws Exception {
+    mockMvc
+        .perform(
+            put("/api/HelpRequest")
+                .param("id", "67")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validPutBody())
+                .with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void regular_users_cannot_put() throws Exception {
+    mockMvc
+        .perform(
+            put("/api/HelpRequest")
+                .param("id", "67")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validPutBody())
+                .with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_can_edit_an_existing_help_request() throws Exception {
+    LocalDateTime oldTime = LocalDateTime.parse("2022-01-03T00:00:00");
+    LocalDateTime newTime = LocalDateTime.parse("2023-01-03T00:00:00");
+
+    HelpRequest original =
+        HelpRequest.builder()
+            .requesterEmail("student1@ucsb.edu")
+            .teamId("team01")
+            .tableOrBreakoutRoom("Table 1")
+            .requestTime(oldTime)
+            .explanation("Original help request")
+            .solved(false)
+            .build();
+    original.setId(67L);
+
+    HelpRequest expectedUpdated =
+        HelpRequest.builder()
+            .requesterEmail("student2@ucsb.edu")
+            .teamId("team02")
+            .tableOrBreakoutRoom("Table 8")
+            .requestTime(newTime)
+            .explanation("Updated help request")
+            .solved(true)
+            .build();
+    expectedUpdated.setId(67L);
+
+    when(helpRequestRepository.findById(eq(67L))).thenReturn(Optional.of(original));
+
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/HelpRequest")
+                    .param("id", "67")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
+                    .content(validPutBody())
+                    .with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    verify(helpRequestRepository, times(1)).findById(67L);
+    verify(helpRequestRepository, times(1)).save(eq(expectedUpdated));
+
+    String expectedJson = mapper.writeValueAsString(expectedUpdated);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expectedJson, responseString);
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_cannot_edit_help_request_that_does_not_exist() throws Exception {
+    when(helpRequestRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(
+            put("/api/HelpRequest")
+                .param("id", "67")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validPutBody())
+                .with(csrf()))
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(org.hamcrest.Matchers.containsString("HelpRequest with id 67 not found")));
+
+    verify(helpRequestRepository, times(1)).findById(67L);
+  }
+
+  @Test
+  public void logged_out_users_cannot_delete() throws Exception {
+    mockMvc
+        .perform(delete("/api/HelpRequest").param("id", "123").with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void regular_users_cannot_delete() throws Exception {
+    mockMvc
+        .perform(delete("/api/HelpRequest").param("id", "123").with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_can_delete_an_existing_help_request() throws Exception {
+    HelpRequest request =
+        HelpRequest.builder()
+            .requesterEmail("student1@ucsb.edu")
+            .teamId("team01")
+            .tableOrBreakoutRoom("Table 5")
+            .requestTime(LocalDateTime.parse("2026-10-17T14:30:00"))
+            .explanation("Need help with Java")
+            .solved(false)
+            .build();
+
+    request.setId(123L);
+    when(helpRequestRepository.findById(eq(123L))).thenReturn(Optional.of(request));
+
+    MvcResult response =
+        mockMvc
+            .perform(delete("/api/HelpRequest").param("id", "123").with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    verify(helpRequestRepository, times(1)).findById(123L);
+    verify(helpRequestRepository, times(1)).delete(eq(request));
+
+    java.util.Map<String, Object> json = responseToJson(response);
+    assertEquals("record 123 deleted", json.get("message"));
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_cannot_delete_help_request_that_does_not_exist() throws Exception {
+    when(helpRequestRepository.findById(eq(123L))).thenReturn(Optional.empty());
+
+    MvcResult response =
+        mockMvc
+            .perform(delete("/api/HelpRequest").param("id", "123").with(csrf()))
+            .andExpect(status().isNotFound())
+            .andReturn();
+
+    verify(helpRequestRepository, times(1)).findById(123L);
+
+    java.util.Map<String, Object> json = responseToJson(response);
+    assertEquals("record 123 not found", json.get("message"));
   }
 }
