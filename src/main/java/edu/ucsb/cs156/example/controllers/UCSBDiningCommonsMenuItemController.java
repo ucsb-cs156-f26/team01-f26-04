@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItem;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.UCSBDiningCommonsMenuItemRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,5 +45,16 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     item.setStation(station);
 
     return repository.save(item);
+  }
+
+  @Operation(summary = "Get a single UCSB Dining Commons menu item by ID")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @GetMapping("")
+  public UCSBDiningCommonsMenuItem getMenuItem(
+      @Parameter(description = "ID of the menu item") @RequestParam long id) {
+
+    return repository
+        .findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
   }
 }
