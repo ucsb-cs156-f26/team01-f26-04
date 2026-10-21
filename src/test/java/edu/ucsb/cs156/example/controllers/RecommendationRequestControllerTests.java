@@ -220,6 +220,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                     .param("requesterEmail", "requester@example.com")
                     .param("professorEmail", "professor@example.com")
                     .param("explanation", "Please write a recommendation.")
+                    .param("done", "false")
                     .param("dateRequested", "2026-10-20T10:00:00")
                     .param("dateNeeded", "2026-11-20T10:00:00")
                     .with(csrf()))
