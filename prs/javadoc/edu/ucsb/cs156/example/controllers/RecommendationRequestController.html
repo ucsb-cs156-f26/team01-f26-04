@@ -65,6 +65,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#allRecommendationRequests()" tabindex="0">allRecommendationRequests()</a></li>
 <li><a href="#getById(java.lang.Long)" tabindex="0">getById(Long)</a></li>
+<li><a href="#updateRecommendationRequest(java.lang.Long,edu.ucsb.cs156.example.entities.RecommendationRequest)" tabindex="0">updateRecommendationRequest(Long, RecommendationRequest)</a></li>
 <li><a href="#postRecommendationRequest(java.lang.String,java.lang.String,java.time.LocalDateTime,java.time.LocalDateTime)" tabindex="0">postRecommendationRequest(String, String, LocalDateTime, LocalDateTime)</a></li>
 </ol>
 </li>
@@ -83,7 +84,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="horizontal-scroll">
-<div class="type-signature"><span class="annotations">@RequestMapping("/api/recommendationrequests")
+<div class="type-signature"><span class="annotations">@RequestMapping({"/api/recommendationrequests","/api/RecommendationRequest"})
 @RestController
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">RecommendationRequestController</span>
 <span class="extends-implements">extends <a href="ApiController.html" title="class in edu.ucsb.cs156.example.controllers">ApiController</a></span></div>
@@ -133,6 +134,12 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateNeeded)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new recommendation request</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRecommendationRequest(java.lang.Long,edu.ucsb.cs156.example.entities.RecommendationRequest)" class="member-name-link">updateRecommendationRequest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id,
+ @Valid <a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a>&nbsp;incoming)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update a recommendation request.</div>
 </div>
 </div>
 </div>
@@ -199,6 +206,27 @@ loadScripts(document, 'script');</script>
 <dd><code>id</code> - the id of the recommendation request</dd>
 <dt>Returns:</dt>
 <dd>a RecommendationRequest</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="updateRecommendationRequest(java.lang.Long,edu.ucsb.cs156.example.entities.RecommendationRequest)">
+<h3>updateRecommendationRequest</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PutMapping("")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">updateRecommendationRequest</span><wbr><span class="parameters">(@RequestParam
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id,
+ @RequestBody @Valid
+ @Valid <a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a>&nbsp;incoming)</span></div>
+<div class="block">Update a recommendation request.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - the id of the request to update</dd>
+<dd><code>incoming</code> - the new request field values</dd>
+<dt>Returns:</dt>
+<dd>the updated recommendation request</dd>
 </dl>
 </div>
 </section>
