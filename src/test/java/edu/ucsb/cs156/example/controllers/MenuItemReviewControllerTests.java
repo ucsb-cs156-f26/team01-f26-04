@@ -223,7 +223,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase {
     // arrange
 
     LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
-    LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
+    LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:01");
 
     MenuItemReview menuItemReview1 =
         MenuItemReview.builder()
@@ -234,7 +234,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase {
             .comments("Great menu item!")
             .build();
 
-    MenuItemReview editedMenuItemReview1 =
+    MenuItemReview editedMenuItemReview =
         MenuItemReview.builder()
             .itemId(2L)
             .reviewerEmail("user2@example.com")
@@ -243,9 +243,9 @@ public class MenuItemReviewControllerTests extends ControllerTestCase {
             .comments("Not Great menu item!")
             .build();
 
-    String requestBody = mapper.writeValueAsString(editedMenuItemReview1);
+    String requestBody = mapper.writeValueAsString(editedMenuItemReview);
 
-    when(menuItemReviewRepository.findById(eq(7L))).thenReturn(Optional.of(menuItemReview1));
+    when(menuItemReviewRepository.findById(eq(67L))).thenReturn(Optional.of(menuItemReview1));
 
     // act
     MvcResult response =
@@ -262,7 +262,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase {
 
     // assert
     verify(menuItemReviewRepository, times(1)).findById(67L);
-    verify(menuItemReviewRepository, times(1)).save(editedMenuItemReview1);
+    verify(menuItemReviewRepository, times(1)).save(editedMenuItemReview);
     String responseString = response.getResponse().getContentAsString();
     assertEquals(requestBody, responseString);
   }
