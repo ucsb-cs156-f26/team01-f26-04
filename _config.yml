@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/team01-f26-04
 owner: ucsb-cs156-f26
 repo_name: team01-f26-04
-pull_requests: [{"author":{"id":"U_kgDOCKcWAw","is_bot":false,"login":"harry-lai","name":"Harry Lai"},"headRefName":"hl-recReqDelete","number":79,"title":"Missing parameter fix for recommendation request","url":"https://github.com/ucsb-cs156-f26/team01-f26-04/pull/79"}]
+pull_requests: []
