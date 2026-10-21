@@ -100,7 +100,6 @@ public class RecommendationRequestController extends ApiController {
     recommendationRequest.setProfessorEmail(professorEmail);
     recommendationRequest.setDateRequested(dateRequested);
     recommendationRequest.setDateNeeded(dateNeeded);
-    recommendationRequest.setDone(false);
 
     RecommendationRequest savedRecommendationRequest =
         recommendationRequestRepository.save(recommendationRequest);
