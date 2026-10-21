@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import edu.ucsb.cs156.example.ControllerTestCase;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
@@ -76,6 +78,31 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 .param("professorEmail", "professor@example.com")
                 .param("dateRequested", "2026-10-20T10:00:00")
                 .param("dateNeeded", "2026-11-20T10:00:00")
+                .with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  public void logged_out_users_cannot_put() throws Exception {
+    mockMvc
+        .perform(
+            put("/api/RecommendationRequest")
+                .param("id", "7")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
+                .with(csrf()))
+        .andExpect(status().isForbidden());
+  }
+
+  @WithMockUser(roles = {"USER"})
+  @Test
+  public void regular_users_cannot_put() throws Exception {
+    mockMvc
+        .perform(
+            put("/api/RecommendationRequest")
+                .param("id", "7")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
                 .with(csrf()))
         .andExpect(status().isForbidden());
   }
@@ -184,5 +211,89 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     verify(recommendationRequestRepository, times(1)).save(expectedRequest);
     assertEquals(
         mapper.writeValueAsString(expectedRequest), response.getResponse().getContentAsString());
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_can_update_a_recommendation_request() throws Exception {
+    RecommendationRequest existingRequest =
+        RecommendationRequest.builder()
+            .id(7L)
+            .requesterEmail("old-requester@example.com")
+            .professorEmail("old-professor@example.com")
+            .explanation("Old explanation")
+            .dateRequested(LocalDateTime.parse("2026-10-20T10:00:00"))
+            .dateNeeded(LocalDateTime.parse("2026-11-20T10:00:00"))
+            .done(false)
+            .build();
+    RecommendationRequest incomingRequest =
+        RecommendationRequest.builder()
+            .requesterEmail("requester@example.com")
+            .professorEmail("professor@example.com")
+            .explanation("Updated explanation")
+            .dateRequested(LocalDateTime.parse("2026-10-21T10:00:00"))
+            .dateNeeded(LocalDateTime.parse("2026-11-21T10:00:00"))
+            .done(true)
+            .build();
+    RecommendationRequest expectedRequest =
+        RecommendationRequest.builder()
+            .id(7L)
+            .requesterEmail("requester@example.com")
+            .professorEmail("professor@example.com")
+            .explanation("Updated explanation")
+            .dateRequested(LocalDateTime.parse("2026-10-21T10:00:00"))
+            .dateNeeded(LocalDateTime.parse("2026-11-21T10:00:00"))
+            .done(true)
+            .build();
+    when(recommendationRequestRepository.findById(7L)).thenReturn(Optional.of(existingRequest));
+    when(recommendationRequestRepository.save(expectedRequest)).thenReturn(expectedRequest);
+
+    String requestBody = mapper.writeValueAsString(incomingRequest);
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/RecommendationRequest")
+                    .param("id", "7")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
+                    .content(requestBody)
+                    .with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    verify(recommendationRequestRepository, times(1)).findById(7L);
+    verify(recommendationRequestRepository, times(1)).save(expectedRequest);
+    assertEquals(
+        mapper.writeValueAsString(expectedRequest), response.getResponse().getContentAsString());
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void admin_cannot_update_a_recommendation_request_that_does_not_exist() throws Exception {
+    RecommendationRequest incomingRequest =
+        RecommendationRequest.builder()
+            .requesterEmail("requester@example.com")
+            .professorEmail("professor@example.com")
+            .explanation("Updated explanation")
+            .dateRequested(LocalDateTime.parse("2026-10-21T10:00:00"))
+            .dateNeeded(LocalDateTime.parse("2026-11-21T10:00:00"))
+            .done(true)
+            .build();
+    when(recommendationRequestRepository.findById(7L)).thenReturn(Optional.empty());
+
+    MvcResult response =
+        mockMvc
+            .perform(
+                put("/api/RecommendationRequest")
+                    .param("id", "7")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(incomingRequest))
+                    .with(csrf()))
+            .andExpect(status().isNotFound())
+            .andReturn();
+
+    verify(recommendationRequestRepository, times(1)).findById(7L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("id 7 not found", json.get("message"));
   }
 }

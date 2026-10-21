@@ -7,6 +7,7 @@ import edu.ucsb.cs156.example.repositories.RecommendationRequestRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +56,34 @@ public class RecommendationRequestController extends ApiController {
     return recommendationRequestRepository
         .findById(id)
         .orElseThrow(() -> new EntityNotFoundException("id %s not found".formatted(id)));
+  }
+
+  /**
+   * Update a recommendation request.
+   *
+   * @param id the id of the request to update
+   * @param incoming the new request field values
+   * @return the updated recommendation request
+   */
+  @Operation(summary = "Update a recommendation request")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping("")
+  public RecommendationRequest updateRecommendationRequest(
+      @Parameter(name = "id") @RequestParam Long id,
+      @RequestBody @Valid RecommendationRequest incoming) {
+    RecommendationRequest recommendationRequest =
+        recommendationRequestRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("id %s not found".formatted(id)));
+
+    recommendationRequest.setRequesterEmail(incoming.getRequesterEmail());
+    recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());
+    recommendationRequest.setExplanation(incoming.getExplanation());
+    recommendationRequest.setDateRequested(incoming.getDateRequested());
+    recommendationRequest.setDateNeeded(incoming.getDateNeeded());
+    recommendationRequest.setDone(incoming.getDone());
+
+    return recommendationRequestRepository.save(recommendationRequest);
   }
 
   /**
