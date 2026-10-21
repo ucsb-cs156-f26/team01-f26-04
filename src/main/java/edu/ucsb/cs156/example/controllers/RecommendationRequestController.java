@@ -1,6 +1,5 @@
 package edu.ucsb.cs156.example.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucsb.cs156.example.entities.RecommendationRequest;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.RecommendationRequestRepository;
@@ -53,7 +52,7 @@ public class RecommendationRequestController extends ApiController {
   @Operation(summary = "Get a single recommendation request")
   @PreAuthorize("hasRole('ROLE_USER')")
   @GetMapping("")
-  public RecommendationRequest getById(@Parameter(name = "id") @RequestParam Long id) {
+  public RecommendationRequest getById(@Parameter(name = "id") @RequestParam("id") Long id) {
     return recommendationRequestRepository
         .findById(id)
         .orElseThrow(() -> new EntityNotFoundException("id %s not found".formatted(id)));
@@ -70,7 +69,7 @@ public class RecommendationRequestController extends ApiController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("")
   public RecommendationRequest updateRecommendationRequest(
-      @Parameter(name = "id") @RequestParam Long id,
+      @Parameter(name = "id") @RequestParam("id") Long id,
       @RequestBody @Valid RecommendationRequest incoming) {
     RecommendationRequest recommendationRequest =
         recommendationRequestRepository
@@ -96,7 +95,7 @@ public class RecommendationRequestController extends ApiController {
   @Operation(summary = "Delete a recommendation request")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("")
-  public Object deleteRecommendationRequest(@Parameter(name = "id") @RequestParam Long id) {
+  public Object deleteRecommendationRequest(@Parameter(name = "id") @RequestParam("id") Long id) {
     RecommendationRequest recommendationRequest =
         recommendationRequestRepository
             .findById(id)
@@ -111,6 +110,7 @@ public class RecommendationRequestController extends ApiController {
    *
    * @param requesterEmail the email of the person requesting the recommendation
    * @param professorEmail the email of the professor for whom the recommendation is requested
+   * @param explanation the reason for requesting the recommendation
    * @param dateRequested the date the recommendation is requested
    * @param dateNeeded the date the recommendation is needed
    * @return the saved recommendation request
@@ -119,8 +119,10 @@ public class RecommendationRequestController extends ApiController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/post")
   public RecommendationRequest postRecommendationRequest(
-      @Parameter(name = "requesterEmail") @RequestParam String requesterEmail,
-      @Parameter(name = "professorEmail") @RequestParam String professorEmail,
+      @Parameter(name = "requesterEmail") @RequestParam("requesterEmail") String requesterEmail,
+      @Parameter(name = "professorEmail") @RequestParam("professorEmail") String professorEmail,
+      @Parameter(name = "explanation") @RequestParam(name = "explanation", required = false)
+          String explanation,
       @Parameter(
               name = "dateRequested",
               description =
@@ -134,8 +136,7 @@ public class RecommendationRequestController extends ApiController {
                   "date needed (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)")
           @RequestParam("dateNeeded")
           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-          LocalDateTime dateNeeded)
-      throws JsonProcessingException {
+          LocalDateTime dateNeeded) {
 
     // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     // See: https://www.baeldung.com/spring-date-parameters
@@ -146,6 +147,7 @@ public class RecommendationRequestController extends ApiController {
     RecommendationRequest recommendationRequest = new RecommendationRequest();
     recommendationRequest.setRequesterEmail(requesterEmail);
     recommendationRequest.setProfessorEmail(professorEmail);
+    recommendationRequest.setExplanation(explanation);
     recommendationRequest.setDateRequested(dateRequested);
     recommendationRequest.setDateNeeded(dateNeeded);
 
