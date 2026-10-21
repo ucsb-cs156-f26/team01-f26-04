@@ -67,7 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#getById(java.lang.Long)" tabindex="0">getById(Long)</a></li>
 <li><a href="#updateRecommendationRequest(java.lang.Long,edu.ucsb.cs156.example.entities.RecommendationRequest)" tabindex="0">updateRecommendationRequest(Long, RecommendationRequest)</a></li>
 <li><a href="#deleteRecommendationRequest(java.lang.Long)" tabindex="0">deleteRecommendationRequest(Long)</a></li>
-<li><a href="#postRecommendationRequest(java.lang.String,java.lang.String,java.time.LocalDateTime,java.time.LocalDateTime)" tabindex="0">postRecommendationRequest(String, String, LocalDateTime, LocalDateTime)</a></li>
+<li><a href="#postRecommendationRequest(java.lang.String,java.lang.String,java.lang.String,boolean,java.time.LocalDateTime,java.time.LocalDateTime)" tabindex="0">postRecommendationRequest(String, String, String, boolean, LocalDateTime, LocalDateTime)</a></li>
 </ol>
 </li>
 </ol>
@@ -134,8 +134,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Get a single recommendation request by id</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postRecommendationRequest(java.lang.String,java.lang.String,java.time.LocalDateTime,java.time.LocalDateTime)" class="member-name-link">postRecommendationRequest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterEmail,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postRecommendationRequest(java.lang.String,java.lang.String,java.lang.String,boolean,java.time.LocalDateTime,java.time.LocalDateTime)" class="member-name-link">postRecommendationRequest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterEmail,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;professorEmail,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;explanation,
+ boolean&nbsp;done,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateRequested,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateNeeded)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -204,7 +206,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations">@PreAuthorize("hasRole('ROLE_USER')")
 @GetMapping("")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">getById</span><wbr><span class="parameters">(@RequestParam
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">getById</span><wbr><span class="parameters">(@RequestParam("id")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id)</span></div>
 <div class="block">Get a single recommendation request by id</div>
 <dl class="notes">
@@ -222,7 +224,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations">@PreAuthorize("hasRole('ROLE_ADMIN')")
 @PutMapping("")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">updateRecommendationRequest</span><wbr><span class="parameters">(@RequestParam
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">updateRecommendationRequest</span><wbr><span class="parameters">(@RequestParam("id")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id,
  @RequestBody @Valid
  @Valid <a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a>&nbsp;incoming)</span></div>
@@ -243,7 +245,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations">@PreAuthorize("hasRole('ROLE_ADMIN')")
 @DeleteMapping("")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">deleteRecommendationRequest</span><wbr><span class="parameters">(@RequestParam
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">deleteRecommendationRequest</span><wbr><span class="parameters">(@RequestParam("id")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id)</span></div>
 <div class="block">Delete a recommendation request.</div>
 <dl class="notes">
@@ -256,31 +258,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="postRecommendationRequest(java.lang.String,java.lang.String,java.time.LocalDateTime,java.time.LocalDateTime)">
+<section class="detail" id="postRecommendationRequest(java.lang.String,java.lang.String,java.lang.String,boolean,java.time.LocalDateTime,java.time.LocalDateTime)">
 <h3>postRecommendationRequest</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations">@PreAuthorize("hasRole('ROLE_ADMIN')")
 @PostMapping("/post")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">postRecommendationRequest</span><wbr><span class="parameters">(@RequestParam
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entities/RecommendationRequest.html" title="class in edu.ucsb.cs156.example.entities">RecommendationRequest</a></span>&nbsp;<span class="element-name">postRecommendationRequest</span><wbr><span class="parameters">(@RequestParam("requesterEmail")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterEmail,
- @RequestParam
+ @RequestParam("professorEmail")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;professorEmail,
+ @RequestParam(name="explanation",required=false)
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;explanation,
+ @RequestParam(name="done",defaultValue="false")
+ boolean&nbsp;done,
  @RequestParam("dateRequested") @DateTimeFormat(iso=DATE_TIME)
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateRequested,
  @RequestParam("dateNeeded") @DateTimeFormat(iso=DATE_TIME)
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateNeeded)</span>
-                                                throws <span class="exceptions">com.fasterxml.jackson.core.JsonProcessingException</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a>&nbsp;dateNeeded)</span></div>
 <div class="block">Create a new recommendation request</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>requesterEmail</code> - the email of the person requesting the recommendation</dd>
 <dd><code>professorEmail</code> - the email of the professor for whom the recommendation is requested</dd>
+<dd><code>explanation</code> - the reason for requesting the recommendation</dd>
 <dd><code>dateRequested</code> - the date the recommendation is requested</dd>
 <dd><code>dateNeeded</code> - the date the recommendation is needed</dd>
 <dt>Returns:</dt>
 <dd>the saved recommendation request</dd>
-<dt>Throws:</dt>
-<dd><code>com.fasterxml.jackson.core.JsonProcessingException</code></dd>
 </dl>
 </div>
 </section>
