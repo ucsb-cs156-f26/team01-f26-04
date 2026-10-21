@@ -123,6 +123,7 @@ import org.springframework.web.bind.annotation.RestController;
       @Parameter(name = &quot;professorEmail&quot;) @RequestParam(&quot;professorEmail&quot;) String professorEmail,
       @Parameter(name = &quot;explanation&quot;) @RequestParam(name = &quot;explanation&quot;, required = false)
           String explanation,
+      @Parameter(name = &quot;done&quot;) @RequestParam(name = &quot;done&quot;, defaultValue = &quot;false&quot;) boolean done,
       @Parameter(
               name = &quot;dateRequested&quot;,
               description =
@@ -141,20 +142,21 @@ import org.springframework.web.bind.annotation.RestController;
     // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     // See: https://www.baeldung.com/spring-date-parameters
 
-<span class="fc" id="L144">    log.info(&quot;dateRequested={}&quot;, dateRequested);</span>
-<span class="fc" id="L145">    log.info(&quot;dateNeeded={}&quot;, dateNeeded);</span>
+<span class="fc" id="L145">    log.info(&quot;dateRequested={}&quot;, dateRequested);</span>
+<span class="fc" id="L146">    log.info(&quot;dateNeeded={}&quot;, dateNeeded);</span>
 
-<span class="fc" id="L147">    RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
-<span class="fc" id="L148">    recommendationRequest.setRequesterEmail(requesterEmail);</span>
-<span class="fc" id="L149">    recommendationRequest.setProfessorEmail(professorEmail);</span>
-<span class="fc" id="L150">    recommendationRequest.setExplanation(explanation);</span>
-<span class="fc" id="L151">    recommendationRequest.setDateRequested(dateRequested);</span>
-<span class="fc" id="L152">    recommendationRequest.setDateNeeded(dateNeeded);</span>
+<span class="fc" id="L148">    RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+<span class="fc" id="L149">    recommendationRequest.setRequesterEmail(requesterEmail);</span>
+<span class="fc" id="L150">    recommendationRequest.setProfessorEmail(professorEmail);</span>
+<span class="fc" id="L151">    recommendationRequest.setExplanation(explanation);</span>
+<span class="fc" id="L152">    recommendationRequest.setDone(done);</span>
+<span class="fc" id="L153">    recommendationRequest.setDateRequested(dateRequested);</span>
+<span class="fc" id="L154">    recommendationRequest.setDateNeeded(dateNeeded);</span>
 
-<span class="fc" id="L154">    RecommendationRequest savedRecommendationRequest =</span>
-<span class="fc" id="L155">        recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L156">    RecommendationRequest savedRecommendationRequest =</span>
+<span class="fc" id="L157">        recommendationRequestRepository.save(recommendationRequest);</span>
 
-<span class="fc" id="L157">    return savedRecommendationRequest;</span>
+<span class="fc" id="L159">    return savedRecommendationRequest;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
