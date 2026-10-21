@@ -49,7 +49,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
   @Test
   public void logged_out_users_cannot_get_by_id() throws Exception {
     mockMvc
-        .perform(get("/api/recommendationrequests").param("id", "7"))
+        .perform(get("/api/RecommendationRequest").param("id", "7"))
         .andExpect(status().isForbidden());
   }
 
@@ -112,14 +112,14 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     MvcResult response =
         mockMvc
-            .perform(get("/api/recommendationrequests").param("id", "7"))
+            .perform(get("/api/RecommendationRequest").param("id", "7"))
             .andExpect(status().isNotFound())
             .andReturn();
 
     verify(recommendationRequestRepository, times(1)).findById(7L);
     Map<String, Object> json = responseToJson(response);
     assertEquals("EntityNotFoundException", json.get("type"));
-    assertEquals("RecommendationRequest with id 7 not found", json.get("message"));
+    assertEquals("id 7 not found", json.get("message"));
   }
 
   @WithMockUser(roles = {"USER"})

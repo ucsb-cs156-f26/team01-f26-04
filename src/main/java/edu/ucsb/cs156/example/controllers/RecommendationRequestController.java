@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** This is a REST controller for RecommendationRequestController */
 @Tag(name = "RecommendationRequests")
-@RequestMapping("/api/recommendationrequests")
+@RequestMapping({"/api/recommendationrequests", "/api/RecommendationRequest"})
 @RestController
 @Slf4j
 public class RecommendationRequestController extends ApiController {
@@ -50,12 +50,9 @@ public class RecommendationRequestController extends ApiController {
   @PreAuthorize("hasRole('ROLE_USER')")
   @GetMapping("")
   public RecommendationRequest getById(@Parameter(name = "id") @RequestParam Long id) {
-    RecommendationRequest recommendationRequest =
-        recommendationRequestRepository
-            .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
-
-    return recommendationRequest;
+    return recommendationRequestRepository
+        .findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("id %s not found".formatted(id)));
   }
 
   /**
