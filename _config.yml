@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/team01-f26-04
 owner: ucsb-cs156-f26
 repo_name: team01-f26-04
-pull_requests: []
+pull_requests: [{"author":{"id":"U_kgDOCKcWAw","is_bot":false,"login":"harry-lai","name":"Harry Lai"},"headRefName":"hl-recReqDelete","number":78,"title":"Syntax fixes for Recommendation Request parameters","url":"https://github.com/ucsb-cs156-f26/team01-f26-04/pull/78"}]
