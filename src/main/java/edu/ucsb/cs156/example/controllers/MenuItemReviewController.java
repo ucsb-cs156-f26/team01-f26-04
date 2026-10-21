@@ -1,7 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucsb.cs156.example.entities.MenuItemReview;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -60,8 +60,7 @@ public class MenuItemReviewController extends ApiController {
           @RequestParam("dateReviewed")
           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
           LocalDateTime dateReviewed,
-      @Parameter(name = "comments") @RequestParam String comments)
-      throws JsonProcessingException {
+      @Parameter(name = "comments") @RequestParam String comments) {
 
     // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     // See: https://www.baeldung.com/spring-date-parameters
@@ -78,5 +77,23 @@ public class MenuItemReviewController extends ApiController {
     MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
 
     return savedMenuItemReview;
+  }
+
+  /**
+   * Get a single MenuItemReview by id
+   *
+   * @param id the id of the menu item review
+   * @return a MenuItemReview
+   */
+  @Operation(summary = "Get a single menu item review")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @GetMapping("")
+  public MenuItemReview getById(@Parameter(name = "id") @RequestParam Long id) {
+    MenuItemReview menuItemReview =
+        menuItemReviewRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+    return menuItemReview;
   }
 }
