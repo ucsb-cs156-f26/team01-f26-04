@@ -100,12 +100,11 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc" id="L100">    recommendationRequest.setProfessorEmail(professorEmail);</span>
 <span class="fc" id="L101">    recommendationRequest.setDateRequested(dateRequested);</span>
 <span class="fc" id="L102">    recommendationRequest.setDateNeeded(dateNeeded);</span>
-<span class="fc" id="L103">    recommendationRequest.setDone(false);</span>
 
-<span class="fc" id="L105">    RecommendationRequest savedRecommendationRequest =</span>
-<span class="fc" id="L106">        recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L104">    RecommendationRequest savedRecommendationRequest =</span>
+<span class="fc" id="L105">        recommendationRequestRepository.save(recommendationRequest);</span>
 
-<span class="fc" id="L108">    return savedRecommendationRequest;</span>
+<span class="fc" id="L107">    return savedRecommendationRequest;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
