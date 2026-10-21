@@ -123,6 +123,7 @@ public class RecommendationRequestController extends ApiController {
       @Parameter(name = "professorEmail") @RequestParam("professorEmail") String professorEmail,
       @Parameter(name = "explanation") @RequestParam(name = "explanation", required = false)
           String explanation,
+      @Parameter(name = "done") @RequestParam(name = "done", defaultValue = "false") boolean done,
       @Parameter(
               name = "dateRequested",
               description =
@@ -148,6 +149,7 @@ public class RecommendationRequestController extends ApiController {
     recommendationRequest.setRequesterEmail(requesterEmail);
     recommendationRequest.setProfessorEmail(professorEmail);
     recommendationRequest.setExplanation(explanation);
+    recommendationRequest.setDone(done);
     recommendationRequest.setDateRequested(dateRequested);
     recommendationRequest.setDateNeeded(dateNeeded);
 
